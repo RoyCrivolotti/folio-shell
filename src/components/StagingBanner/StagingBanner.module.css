@@ -1,0 +1,26 @@
+.banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 8px 16px;
+  padding-top: max(8px, env(safe-area-inset-top));
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #1a1a1a;
+  background: #f5d565;
+  border-bottom: 1px solid #d4a017;
+}
+
+.withBanner {
+  padding-top: calc(var(--space-8) + 2rem);
+}
+
+.banner a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

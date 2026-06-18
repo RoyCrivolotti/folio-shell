@@ -1,0 +1,51 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+/dist
+/dist-public
+/dist-private
+/dist-ssr
+# Legacy CV bundles live under private/static/legacy/dist/ and must be committed.
+!/private/static/legacy/dist/
+!/private/static/legacy/dist/**
+coverage
+*.local
+
+# Private content (report MDX + generated Vite entries) is synced in at deploy
+# time from the finance-review repo, never committed.
+private/content/
+
+# Per-report entry HTML is generated at build time from finance-review MDX.
+# Keep only the committed public landing (index.html), admin hub (admin.html)
+# and the expense tracker shell (expenses.html).
+/*.html
+!/index.html
+!/admin.html
+!/expenses.html
+
+# Local secrets and env overrides
+.env
+.env.*
+!.env.example
+
+# OAuth client downloads from Google Cloud (never commit)
+client_secret_*.json
+*client_secret*.json
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
