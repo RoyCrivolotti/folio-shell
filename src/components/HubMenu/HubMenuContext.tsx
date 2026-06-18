@@ -42,14 +42,16 @@ function useHubMenuContext(): HubMenuContextValue {
   return ctx
 }
 
-/** Excludes the page the user is already on (matched by pathname or full URL). */
-export function filterNavItemsForPath(items: HubNavItem[], pathname: string): HubNavItem[] {
+type NavLocation = Pick<Location, 'origin' | 'pathname'>
+
+/** Excludes the page the user is already on (origin + pathname, not pathname alone). */
+export function filterNavItemsForPath(items: HubNavItem[], location: NavLocation): HubNavItem[] {
   return items.filter((item) => {
     try {
-      const url = new URL(item.href, window.location.origin)
-      return url.pathname !== pathname
+      const url = new URL(item.href, location.origin)
+      return url.origin !== location.origin || url.pathname !== location.pathname
     } catch {
-      return item.href !== pathname
+      return item.href !== location.pathname
     }
   })
 }
@@ -99,8 +101,12 @@ function useFocusTrap(active: boolean, containerRef: RefObject<HTMLElement | nul
 
 function HubMenuPanel({ anchor, onClose }: { anchor: HubMenuAnchor; onClose: () => void }) {
   const { navItems } = useHubMenuContext()
-  const path = typeof window !== 'undefined' ? window.location.pathname : ''
-  const items = useMemo(() => filterNavItemsForPath(navItems, path), [navItems, path])
+  const location: NavLocation =
+    typeof window !== 'undefined' ? window.location : { origin: '', pathname: '' }
+  const items = useMemo(
+    () => filterNavItemsForPath(navItems, location),
+    [navItems, location.origin, location.pathname],
+  )
   const panelClass = anchor === 'fixed' ? styles.panelFixed : styles.panelInline
   const titleId = useId()
   const panelRef = useRef<HTMLElement>(null)

@@ -2,19 +2,10 @@
  * Editable profile content for the public landing page. Update these values to
  * change what the card shows - no component changes required.
  */
-export interface Profile {
-  name: string
-  tagline: string
-  githubUrl: string
-  linkedinUrl: string
-}
+export type { Profile } from './profileData'
+export { profile } from './profileData'
 
-export const profile: Profile = {
-  name: 'Roy Crivolotti',
-  tagline: 'Software Engineer',
-  githubUrl: 'https://github.com/RoyCrivolotti',
-  linkedinUrl: 'https://www.linkedin.com/in/roy-gabriel-crivolotti-53b448103',
-}
+export { getProfileDocumentMeta } from './profileMeta'
 
 /**
  * URL of the private admin area (a separate Cloudflare Pages project protected

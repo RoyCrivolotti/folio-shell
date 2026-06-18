@@ -15,7 +15,7 @@ export type {
   HubMenuTriggerVariant,
   HubNavItem,
 } from './components/HubMenu/HubMenuContext'
-export { profile, privateAreaUrl } from './config/profile'
+export { profile, privateAreaUrl, getProfileDocumentMeta } from './config/profile'
 export type { Profile } from './config/profile'
 export { getSiteUrls } from './config/siteUrls'
 export type { SiteUrls } from './config/siteUrls'

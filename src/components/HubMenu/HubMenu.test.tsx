@@ -38,4 +38,21 @@ describe('HubMenu', () => {
     expect(screen.queryByRole('link', { name: 'Admin' })).not.toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Example' })).toBeInTheDocument()
   })
+
+  it('keeps cross-origin links when pathname matches', async () => {
+    const user = userEvent.setup()
+    const crossApp: HubNavItem[] = [
+      { href: 'https://other.test/', label: 'Hub', Icon: GitHubIcon },
+      { href: '/', label: 'This app', Icon: GitHubIcon },
+    ]
+    window.history.pushState({}, '', '/')
+    render(
+      <HubMenuRoot anchor="inline" navItems={crossApp}>
+        <HubMenuTrigger label="Menu" />
+      </HubMenuRoot>,
+    )
+    await user.click(screen.getByRole('button', { name: 'Menu' }))
+    expect(screen.getByRole('link', { name: 'Hub' })).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'This app' })).not.toBeInTheDocument()
+  })
 })
