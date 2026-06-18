@@ -3,9 +3,12 @@ import {
   createContext,
   useContext,
   useEffect,
+  useId,
   useMemo,
+  useRef,
   useState,
   type ComponentType,
+  type RefObject,
   type ReactNode,
   type SVGProps,
 } from 'react'
@@ -66,23 +69,58 @@ function useMenuLock(open: boolean, onClose: () => void) {
   }, [open, onClose])
 }
 
+function useFocusTrap(active: boolean, containerRef: RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    if (!active) return
+    const root = containerRef.current
+    if (!root) return
+    const focusables = root.querySelectorAll<HTMLElement>(
+      'button, a[href], [tabindex]:not([tabindex="-1"])',
+    )
+    if (focusables.length === 0) return
+    const first = focusables[0]
+    const last = focusables[focusables.length - 1]
+    if (!first || !last) return
+    first.focus()
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+    root.addEventListener('keydown', onKey)
+    return () => root.removeEventListener('keydown', onKey)
+  }, [active, containerRef])
+}
+
 function HubMenuPanel({ anchor, onClose }: { anchor: HubMenuAnchor; onClose: () => void }) {
   const { navItems } = useHubMenuContext()
   const path = typeof window !== 'undefined' ? window.location.pathname : ''
   const items = useMemo(() => filterNavItemsForPath(navItems, path), [navItems, path])
   const panelClass = anchor === 'fixed' ? styles.panelFixed : styles.panelInline
+  const titleId = useId()
+  const panelRef = useRef<HTMLElement>(null)
+  useFocusTrap(true, panelRef)
 
   return (
     <>
       <div className={styles.backdrop} onClick={onClose} aria-hidden="true" />
       <nav
+        ref={panelRef}
         className={`${styles.panel} ${panelClass}`}
         aria-label="Site navigation"
+        aria-labelledby={titleId}
         role="dialog"
         aria-modal="true"
       >
         <div className={styles.head}>
-          <span className={styles.headLabel}>Navigate to</span>
+          <span id={titleId} className={styles.headLabel}>
+            Navigate to
+          </span>
           <button type="button" className={styles.close} onClick={onClose} aria-label="Close">
             <span className={styles.ico}>
               <XIcon />
