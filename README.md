@@ -3,6 +3,8 @@
 Shared React UI for the personal site family: design tokens, layout primitives,
 hub navigation shell, and profile content.
 
+Proprietary — see [LICENSE](./LICENSE).
+
 Consumed by `landing`, `admin-hub`, and `expense-tracker`.
 
 ## Local development
@@ -40,3 +42,5 @@ Current pin: **v1.0.0**
 ```bash
 npm run verify   # lint + typecheck + test
 ```
+
+Workspace architecture: `~/Repos/personal/ARCHITECTURE.md`.
