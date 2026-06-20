@@ -40,16 +40,12 @@ Hub menu shows **Sign out** by default (`/cdn-cgi/access/logout`). Pass
 
 1. Change and verify here: `npm run verify`
 2. Commit, tag, and push: `git tag v1.x.y && git push origin v1.x.y`
-3. Publish from **`site-ui/`** (this repo — not expense-tracker or other apps; those inherit your company npm registry):
+3. Publish from **`site-ui/`** (authenticator OTP required after 2FA):
 
    ```bash
    cd ~/Repos/personal/site-ui
-   npm config get registry    # must be https://registry.npmjs.org/
-   npm login                  # CLI auth; browser login on npmjs.com is separate
-   npm run publish:public
+   npm publish --otp=123456   # code from your authenticator app
    ```
-
-   Project `.npmrc` forces public npm here only. Your global CodeArtifact config is unchanged.
 
 4. Bump `"@crivolotti/folio-ui"` in consumer `package.json` files
 
