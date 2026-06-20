@@ -5,11 +5,21 @@ hub navigation shell, and icons.
 
 Proprietary — see [LICENSE](./LICENSE). Source is public for transparency.
 
-Consumed by `landing`, `admin-hub`, and `expense-tracker` via npm:
+Consumed by `landing`, `admin-hub`, and `expense-tracker`:
 
 ```bash
 npm install @crivolotti/folio-ui
 ```
+
+The unscoped name `folio-ui` on npm is a different package — always use `@crivolotti/folio-ui`.
+
+Until the package is on the npm registry, consumers pin the GitHub tag:
+
+```json
+"@crivolotti/folio-ui": "git+https://github.com/RoyCrivolotti/folio-ui.git#v1.1.0"
+```
+
+After publish (GitHub release + `NPM_TOKEN` secret), switch to `"^1.1.0"`.
 
 ## Environment variables (consumers)
 
