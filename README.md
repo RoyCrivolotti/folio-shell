@@ -24,6 +24,9 @@ Hub cross-links read build-time Vite env:
 | `VITE_ADMIN_HUB_URL` | Private admin hub URL |
 | `VITE_EXPENSES_URL` | Expense tracker URL |
 
+Commit `.env.production` in each consumer app so CI/production builds embed the
+correct hub URLs. `getSiteUrls()` also has production fallbacks as a safety net.
+
 Profile content and private-area links live in each app, not in this package.
 
 ## Cloudflare Access sign-out
@@ -44,7 +47,7 @@ Hub menu shows **Sign out** by default (`/cdn-cgi/access/logout`). Pass
 
 4. Bump `"folio-shell"` semver in consumer `package.json` files
 
-Current version: **1.0.0**
+Current version: **1.0.1**
 
 ## Local development (sibling checkout)
 

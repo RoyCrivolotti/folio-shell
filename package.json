@@ -1,6 +1,6 @@
 {
   "name": "folio-shell",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Shared React UI — design tokens, layout, hub navigation shell",
   "type": "module",
   "license": "SEE LICENSE IN LICENSE",
