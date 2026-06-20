@@ -8,7 +8,7 @@ Proprietary — see [LICENSE](./LICENSE). Source is public for transparency.
 Consumed by `landing`, `admin-hub`, and `expense-tracker` via npm:
 
 ```bash
-npm install folio-ui
+npm install @crivolotti/folio-ui
 ```
 
 ## Environment variables (consumers)
@@ -33,7 +33,7 @@ Hub menu shows **Sign out** by default (`/cdn-cgi/access/logout`). Pass
 1. Change and verify here: `npm run verify`
 2. Commit, tag, and push: `git tag v1.x.y && git push origin v1.x.y`
 3. Publish: `npm publish --access public`
-4. Bump `"folio-ui"` semver in consumer `package.json` files
+4. Bump `"@crivolotti/folio-ui"` semver in consumer `package.json` files
 
 Current version: **1.1.0**
 
