@@ -39,6 +39,31 @@ describe('HubMenu', () => {
     expect(screen.getByRole('link', { name: 'Example' })).toBeInTheDocument()
   })
 
+  it('shows sign-out when logoutHref is set', async () => {
+    const user = userEvent.setup()
+    render(
+      <HubMenuRoot anchor="inline" navItems={navItems} logoutHref="/cdn-cgi/access/logout">
+        <HubMenuTrigger label="Menu" />
+      </HubMenuRoot>,
+    )
+    await user.click(screen.getByRole('button', { name: 'Menu' }))
+    expect(screen.getByRole('link', { name: 'Sign out' })).toHaveAttribute(
+      'href',
+      '/cdn-cgi/access/logout',
+    )
+  })
+
+  it('hides sign-out when logoutHref is null', async () => {
+    const user = userEvent.setup()
+    render(
+      <HubMenuRoot anchor="inline" navItems={navItems} logoutHref={null}>
+        <HubMenuTrigger label="Menu" />
+      </HubMenuRoot>,
+    )
+    await user.click(screen.getByRole('button', { name: 'Menu' }))
+    expect(screen.queryByRole('link', { name: 'Sign out' })).not.toBeInTheDocument()
+  })
+
   it('keeps cross-origin links when pathname matches', async () => {
     const user = userEvent.setup()
     const crossApp: HubNavItem[] = [

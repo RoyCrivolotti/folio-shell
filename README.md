@@ -1,46 +1,52 @@
-# site-ui
+# folio-ui
 
 Shared React UI for the personal site family: design tokens, layout primitives,
-hub navigation shell, and profile content.
+hub navigation shell, and icons.
 
-Proprietary — see [LICENSE](./LICENSE).
+Proprietary — see [LICENSE](./LICENSE). Source is public for transparency.
 
-Consumed by `landing`, `admin-hub`, and `expense-tracker`.
-
-## Local development
-
-From the workspace root:
+Consumed by `landing`, `admin-hub`, and `expense-tracker` via npm:
 
 ```bash
-cd ~/Repos/personal
-./link-site-ui.sh
-npm install
+npm install folio-ui
 ```
 
-Each app uses `"@crivolotti/site-ui": "file:./site-ui"` with the symlink created by
-`link-site-ui.sh`.
+## Environment variables (consumers)
 
-## CI (consumers)
+Hub cross-links read build-time Vite env:
 
-Deploy workflows check out this repo at a **pinned tag** into `./site-ui` before
-`npm install`. Bump the tag in all three consumer workflows when releasing.
+| Variable | Purpose |
+| --- | --- |
+| `VITE_LANDING_URL` | Public landing URL |
+| `VITE_ADMIN_HUB_URL` | Private admin hub URL |
+| `VITE_EXPENSES_URL` | Expense tracker URL |
 
-## Release / bump workflow
+Profile content and private-area links live in each app, not in this package.
+
+## Cloudflare Access sign-out
+
+Hub menu shows **Sign out** by default (`/cdn-cgi/access/logout`). Pass
+`logoutHref={null}` on public pages (e.g. landing).
+
+## Release workflow
 
 1. Change and verify here: `npm run verify`
-2. Commit and tag: `git tag v1.0.x && git push origin v1.0.x`
-3. Update `ref: v1.0.x` in the site-ui checkout step of:
-   - `landing/.github/workflows/deploy.yml`
-   - `admin-hub/.github/workflows/deploy.yml`
-   - `expense-tracker/.github/workflows/deploy.yml`
-4. Push each consumer repo (or verify locally with `link-site-ui.sh`)
+2. Commit, tag, and push: `git tag v1.x.y && git push origin v1.x.y`
+3. Publish: `npm publish --access public`
+4. Bump `"folio-ui"` semver in consumer `package.json` files
 
-Current pin: **v1.0.0**
+Current version: **1.1.0**
+
+## Local development (sibling checkout)
+
+From `~/Repos/personal`:
+
+```bash
+./link-folio-ui.sh   # optional symlink for active library work
+```
 
 ## Verify
 
 ```bash
 npm run verify   # lint + typecheck + test
 ```
-
-Workspace architecture: `~/Repos/personal/ARCHITECTURE.md`.

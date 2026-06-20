@@ -1,6 +1,6 @@
 /**
- * Cross-app URLs for hub navigation and deep links. Override at build time via
- * Vite env vars when deploying staging or alternate hostnames.
+ * Cross-app URLs for hub navigation. Set via Vite env in each consumer:
+ * VITE_LANDING_URL, VITE_ADMIN_HUB_URL, VITE_EXPENSES_URL
  */
 export interface SiteUrls {
   landing: string
@@ -8,10 +8,14 @@ export interface SiteUrls {
   expenses: string
 }
 
+function siteUrl(value: string | undefined): string {
+  return value?.trim() ?? ''
+}
+
 export function getSiteUrls(): SiteUrls {
   return {
-    landing: import.meta.env.VITE_LANDING_URL ?? 'https://roy.crivolotti.com',
-    adminHub: import.meta.env.VITE_ADMIN_HUB_URL ?? 'https://roy-admin.crivolotti.com',
-    expenses: import.meta.env.VITE_EXPENSES_URL ?? 'https://expenses.crivolotti.com',
+    landing: siteUrl(import.meta.env.VITE_LANDING_URL),
+    adminHub: siteUrl(import.meta.env.VITE_ADMIN_HUB_URL),
+    expenses: siteUrl(import.meta.env.VITE_EXPENSES_URL),
   }
 }
