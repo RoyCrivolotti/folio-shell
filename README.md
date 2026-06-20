@@ -3,8 +3,6 @@
 Shared React UI for the personal site family: design tokens, layout primitives,
 hub navigation shell, and icons.
 
-Proprietary — see [LICENSE](./LICENSE). Source is public for transparency.
-
 Consumed by `landing`, `admin-hub`, and `expense-tracker`:
 
 ```bash
@@ -19,7 +17,7 @@ Until the package is on the npm registry, consumers pin the GitHub tag:
 "@crivolotti/folio-ui": "git+https://github.com/RoyCrivolotti/folio-ui.git#v1.1.0"
 ```
 
-After publish (GitHub release + `NPM_TOKEN` secret), switch to `"^1.1.0"`.
+After publish, switch to `"^1.1.0"`.
 
 ## Environment variables (consumers)
 
@@ -42,8 +40,20 @@ Hub menu shows **Sign out** by default (`/cdn-cgi/access/logout`). Pass
 
 1. Change and verify here: `npm run verify`
 2. Commit, tag, and push: `git tag v1.x.y && git push origin v1.x.y`
-3. Publish: `npm publish --access public`
-4. Bump `"@crivolotti/folio-ui"` semver in consumer `package.json` files
+3. Publish from **`site-ui/`** (this repo — not expense-tracker or other apps; those inherit your company npm registry):
+
+   ```bash
+   cd ~/Repos/personal/site-ui
+   npm config get registry    # must be https://registry.npmjs.org/
+   npm login                  # CLI auth; browser login on npmjs.com is separate
+   npm run publish:public
+   ```
+
+   Project `.npmrc` forces public npm here only. Your global CodeArtifact config is unchanged.
+
+4. Bump `"@crivolotti/folio-ui"` in consumer `package.json` files
+
+CI publish: GitHub release or workflow dispatch, with `NPM_TOKEN` secret (public npm token).
 
 Current version: **1.1.0**
 
@@ -55,10 +65,13 @@ From `~/Repos/personal`:
 ./link-folio-ui.sh   # optional symlink for active library work
 ```
 
-See [docs/PUBLIC_READINESS.md](./docs/PUBLIC_READINESS.md) before publishing or forking.
-
 ## Verify
 
 ```bash
 npm run verify   # lint + typecheck + test
 ```
+
+## License
+
+Proprietary — see [LICENSE](./LICENSE). Source is public for transparency;
+unauthorized copying, modification, or distribution is prohibited.
