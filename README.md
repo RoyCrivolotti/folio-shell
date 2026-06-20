@@ -3,6 +3,9 @@
 Shared React UI for multi-app personal sites: design tokens, layout primitives,
 hub navigation shell, and icons.
 
+GitHub repo: [RoyCrivolotti/folio-shell](https://github.com/RoyCrivolotti/folio-shell)  
+(Old URLs `site-ui` and `folio-ui` redirect here after renames.)
+
 Proprietary — see [LICENSE](./LICENSE). Source is public for transparency.
 
 Consumed by `landing`, `admin-hub`, and `expense-tracker`:
