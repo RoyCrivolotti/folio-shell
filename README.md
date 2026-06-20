@@ -55,6 +55,8 @@ From `~/Repos/personal`:
 ./link-folio-ui.sh   # optional symlink for active library work
 ```
 
+See [docs/PUBLIC_READINESS.md](./docs/PUBLIC_READINESS.md) before publishing or forking.
+
 ## Verify
 
 ```bash
