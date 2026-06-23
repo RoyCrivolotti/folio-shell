@@ -1,5 +1,6 @@
 export { Layout } from './components/Layout/Layout'
 export { StagingBanner } from './components/StagingBanner/StagingBanner'
+export { StagingFrame } from './components/StagingBanner/StagingFrame'
 export { default as stagingBannerStyles } from './components/StagingBanner/StagingBanner.module.css'
 export { Card } from './components/Card/Card'
 export { IconLink } from './components/IconLink/IconLink'
