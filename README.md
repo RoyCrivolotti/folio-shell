@@ -115,7 +115,7 @@ Returns cross-app URLs from Vite env at build time:
 ```tsx
 import { getSiteUrls } from 'folio-shell'
 
-const { landing, adminHub, expenses } = getSiteUrls()
+const { landing, adminHub, expenses, oncall } = getSiteUrls()
 ```
 
 See [Environment variables](#environment-variables-consumers) below.
@@ -129,6 +129,9 @@ Hub cross-links read build-time Vite env:
 | `VITE_LANDING_URL` | Public landing URL |
 | `VITE_ADMIN_HUB_URL` | Private admin hub URL |
 | `VITE_EXPENSES_URL` | Expense tracker URL |
+| `VITE_ONCALL_URL` | On-call tracker URL |
+| `VITE_APP_ENV` | Set to `staging` on dev/staging builds (enables `StagingFrame` banner) |
+| `VITE_STAGING_PRODUCTION_URL` | Production URL linked from the staging banner |
 
 Commit `.env.production` in each consumer app so CI/production builds embed the
 correct hub URLs. `getSiteUrls()` also has production fallbacks as a safety net.

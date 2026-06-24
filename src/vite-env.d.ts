@@ -11,6 +11,8 @@ interface ImportMetaEnv {
   readonly VITE_LANDING_URL?: string
   readonly VITE_ADMIN_HUB_URL?: string
   readonly VITE_EXPENSES_URL?: string
+  readonly VITE_ONCALL_URL?: string
+  readonly VITE_STAGING_PRODUCTION_URL?: string
 }
 
 interface ImportMeta {
