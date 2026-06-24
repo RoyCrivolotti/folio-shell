@@ -8,7 +8,7 @@ GitHub repo: [RoyCrivolotti/folio-shell](https://github.com/RoyCrivolotti/folio-
 
 Proprietary — see [LICENSE](./LICENSE). Source is public for transparency.
 
-Consumed by `landing`, `admin-hub`, and `expense-tracker`:
+Consumed by `landing`, `admin-hub`, `expense-tracker`, and `oncall-tracker`:
 
 ```bash
 npm install folio-shell
@@ -159,7 +159,7 @@ npm publish --access public
 
 Requires `NPM_TOKEN` locally or an npm login with publish rights.
 
-Current version: **1.0.1**
+Current version: **1.0.4**
 
 ## Local development (sibling checkout)
 
