@@ -54,6 +54,9 @@ describe('MonthGrid', () => {
     await user.click(screen.getByRole('button', { name: '2026-05-15' }))
     expect(onDaySelect).toHaveBeenCalledWith('2026-05-15')
 
+    await user.click(screen.getByRole('button', { name: 'Previous month' }))
+    expect(onMonthChange).toHaveBeenCalledWith('2026-04')
+
     await user.click(screen.getByRole('button', { name: 'Choose month' }))
     expect(screen.getByRole('dialog')).toBeInTheDocument()
   })

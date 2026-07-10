@@ -39,6 +39,7 @@ export function MonthGrid({
       />
       {subtitle ? <p className={styles.subtitle}>{subtitle}</p> : null}
       <MonthGridBody
+        monthKey={monthKey}
         cells={cells}
         timezone={timezone}
         markersByDay={markersByDay}
@@ -51,6 +52,7 @@ export function MonthGrid({
         legendHint={legendHint}
         weekdayLabels={weekdayLabels}
         onDaySelect={onDaySelect}
+        onMonthChange={onMonthChange}
         {...(ariaLabelForDay ? { ariaLabelForDay } : {})}
       />
       {pickerOpen ? (
