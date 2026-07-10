@@ -95,4 +95,23 @@ describe('MonthGrid', () => {
     expect(screen.getByText('NVDA')).toBeInTheDocument()
     expect(screen.getByText('+1')).toBeInTheDocument()
   })
+
+  it('renders compact weekday labels when compactWeekdayLabels is set', () => {
+    render(
+      <MonthGrid
+        monthKey="2026-05"
+        timezone="UTC"
+        markersByDay={new Map()}
+        markerClassName={markerClass}
+        stackedMarkerKind="incident"
+        selectedDay={null}
+        onDaySelect={() => {}}
+        onMonthChange={() => {}}
+        compactWeekdayLabels
+      />,
+    )
+
+    expect(screen.getByText('Su')).toBeInTheDocument()
+    expect(screen.queryByText('Sun')).not.toBeInTheDocument()
+  })
 })

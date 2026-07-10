@@ -58,8 +58,8 @@ export function MonthGridBody({
     <div ref={zoneRef} className={styles.swipeZone} {...pointerHandlers}>
       <CalendarLegend legend={legend} legendHint={legendHint} markerClassName={markerClassName} />
       <div className={styles.weekdays}>
-        {weekdayLabels.map((label) => (
-          <span key={label}>{label}</span>
+        {weekdayLabels.map((label, index) => (
+          <span key={`${label}-${index}`}>{label}</span>
         ))}
       </div>
       <MonthGridCells
