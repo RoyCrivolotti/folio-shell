@@ -1,0 +1,37 @@
+.hint {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.input {
+  font: inherit;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: inherit;
+}
+
+.preview {
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+
+.btn {
+  font: inherit;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 0;
+  background: var(--color-accent);
+  color: #fff;
+  cursor: pointer;
+}

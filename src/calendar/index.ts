@@ -18,3 +18,9 @@ export {
   shiftMonthKey,
   todayKey,
 } from './calendarUtils'
+export { cappedDotDisplay, DEFAULT_STACKED_DOT_CAP } from './cappedDotDisplay'
+export { MonthGrid } from './MonthGrid'
+export { MonthNavStrip } from './MonthNavStrip'
+export { MonthPickerSheet } from './MonthPickerSheet'
+export { useMonthSwipe } from './useMonthSwipe'
+export type { MonthDayMarkers, MonthGridLegendItem, MonthGridProps } from './monthGridTypes'
