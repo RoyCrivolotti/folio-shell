@@ -16,7 +16,10 @@ export function CalendarLegend({
   return (
     <div className={styles.legend}>
       {legend.map((item) => (
-        <span key={item.kind} className={styles.legendItem}>
+        <span
+          key={item.kind}
+          className={`${styles.legendItem} ${item.muted ? styles.legendItemMuted : ''}`}
+        >
           <span className={`${styles.dot} ${markerClassName(item.kind)}`} /> {item.label}
         </span>
       ))}
