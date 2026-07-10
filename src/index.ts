@@ -16,6 +16,7 @@ export type {
   HubMenuTriggerVariant,
   HubNavItem,
 } from './components/HubMenu/HubMenuContext'
+export { useNarrowViewport } from './hooks/useNarrowViewport'
 export { cloudflareAccessLogoutUrl } from './auth/cloudflareAccessLogout'
 export { BottomSheet } from './components/BottomSheet/BottomSheet'
 export { getSiteUrls } from './config/siteUrls'
