@@ -9,6 +9,8 @@ export function MonthGridCells({
   selectedDay,
   stackedMarkerKind,
   markerClassName,
+  markerDisplay = 'dots',
+  maxVisiblePills = 2,
   ariaLabelForDay,
   onDaySelect,
   resolveMarkers,
@@ -19,6 +21,8 @@ export function MonthGridCells({
   selectedDay: string | null
   stackedMarkerKind: string
   markerClassName: (kind: string) => string
+  markerDisplay?: 'dots' | 'pills'
+  maxVisiblePills?: number
   ariaLabelForDay?: (dayKey: string, markers: MonthDayMarkers) => string
   onDaySelect: (dayKey: string) => void
   resolveMarkers: (
@@ -38,6 +42,8 @@ export function MonthGridCells({
             selected={selectedDay === dayKey}
             stackedMarkerKind={stackedMarkerKind}
             markerClassName={markerClassName}
+            markerDisplay={markerDisplay}
+            maxVisiblePills={maxVisiblePills}
             ariaLabel={ariaLabelForDay?.(dayKey, resolveMarkers(markersByDay, dayKey)) ?? dayKey}
             onSelect={onDaySelect}
           />

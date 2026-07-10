@@ -1,5 +1,11 @@
 import type { ReactNode } from 'react'
 
+export type MonthDayMarkerItem = {
+  kind: string
+  label: string
+  hidden?: boolean
+}
+
 export type MonthDayMarkers = {
   /** Marker kinds rendered as one dot each (e.g. on-call, holiday). */
   kinds: string[]
@@ -7,11 +13,16 @@ export type MonthDayMarkers = {
   stackedCount?: number
   /** Max dots before showing +N overflow. Defaults to 3. */
   stackedMaxDots?: number
+  /** Pill labels when markerDisplay is pills. */
+  items?: MonthDayMarkerItem[]
+  /** Extra events beyond maxVisiblePills. */
+  overflowCount?: number
 }
 
 export type MonthGridLegendItem = {
   kind: string
   label: string
+  muted?: boolean
 }
 
 export type MonthGridProps = {
@@ -30,4 +41,6 @@ export type MonthGridProps = {
   monthPickerTitle?: string
   monthPickerHint?: string
   ariaLabelForDay?: (dayKey: string, markers: MonthDayMarkers) => string
+  markerDisplay?: 'dots' | 'pills'
+  maxVisiblePills?: number
 }

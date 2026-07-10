@@ -1,12 +1,10 @@
 import { useState } from 'react'
-import { CalendarLegend } from './CalendarLegend'
 import { buildMonthGrid } from './calendarUtils'
 import styles from './monthGrid.module.css'
 import type { MonthGridProps } from './monthGridTypes'
-import { MonthGridCells } from './MonthGridCells'
+import { MonthGridBody } from './MonthGridBody'
 import { MonthGridPicker } from './MonthGridPicker'
 import { MonthNavStrip } from './MonthNavStrip'
-import { resolveMonthDayMarkers } from './resolveMonthDayMarkers'
 
 const DEFAULT_WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
@@ -26,6 +24,8 @@ export function MonthGrid({
   monthPickerTitle,
   monthPickerHint,
   ariaLabelForDay,
+  markerDisplay = 'dots',
+  maxVisiblePills = 2,
 }: MonthGridProps) {
   const cells = buildMonthGrid(monthKey, timezone)
   const [pickerOpen, setPickerOpen] = useState(false)
@@ -38,25 +38,21 @@ export function MonthGrid({
         onOpenPicker={() => setPickerOpen(true)}
       />
       {subtitle ? <p className={styles.subtitle}>{subtitle}</p> : null}
-      <div className={styles.swipeZone}>
-        <CalendarLegend legend={legend} legendHint={legendHint} markerClassName={markerClassName} />
-        <div className={styles.weekdays}>
-          {weekdayLabels.map((label) => (
-            <span key={label}>{label}</span>
-          ))}
-        </div>
-        <MonthGridCells
-          cells={cells}
-          timezone={timezone}
-          markersByDay={markersByDay}
-          selectedDay={selectedDay}
-          stackedMarkerKind={stackedMarkerKind}
-          markerClassName={markerClassName}
-          onDaySelect={onDaySelect}
-          resolveMarkers={resolveMonthDayMarkers}
-          {...(ariaLabelForDay ? { ariaLabelForDay } : {})}
-        />
-      </div>
+      <MonthGridBody
+        cells={cells}
+        timezone={timezone}
+        markersByDay={markersByDay}
+        selectedDay={selectedDay}
+        stackedMarkerKind={stackedMarkerKind}
+        markerClassName={markerClassName}
+        markerDisplay={markerDisplay}
+        maxVisiblePills={maxVisiblePills}
+        legend={legend}
+        legendHint={legendHint}
+        weekdayLabels={weekdayLabels}
+        onDaySelect={onDaySelect}
+        {...(ariaLabelForDay ? { ariaLabelForDay } : {})}
+      />
       {pickerOpen ? (
         <MonthGridPicker
           open={pickerOpen}

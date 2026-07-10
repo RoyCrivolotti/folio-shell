@@ -57,4 +57,39 @@ describe('MonthGrid', () => {
     await user.click(screen.getByRole('button', { name: 'Choose month' }))
     expect(screen.getByRole('dialog')).toBeInTheDocument()
   })
+
+  it('renders pill labels when markerDisplay is pills', () => {
+    render(
+      <MonthGrid
+        monthKey="2026-05"
+        timezone="UTC"
+        markersByDay={
+          new Map([
+            [
+              '2026-05-15',
+              {
+                kinds: [],
+                items: [
+                  { kind: 'macro', label: 'FOMC' },
+                  { kind: 'earnings', label: 'NVDA', hidden: true },
+                ],
+                overflowCount: 1,
+              },
+            ],
+          ])
+        }
+        markerClassName={markerClass}
+        stackedMarkerKind="earnings"
+        selectedDay={null}
+        onDaySelect={() => {}}
+        onMonthChange={() => {}}
+        markerDisplay="pills"
+        maxVisiblePills={2}
+      />,
+    )
+
+    expect(screen.getByText('FOMC')).toBeInTheDocument()
+    expect(screen.getByText('NVDA')).toBeInTheDocument()
+    expect(screen.getByText('+1')).toBeInTheDocument()
+  })
 })
