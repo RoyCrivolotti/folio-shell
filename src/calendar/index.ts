@@ -14,11 +14,13 @@ export {
   eventTouchesMonth,
   eventsForDay,
   formatMonthTitle,
+  formatDayTitle,
   parseMonthKey,
   shiftMonthKey,
   todayKey,
 } from './calendarUtils'
-export { cappedDotDisplay, DEFAULT_STACKED_DOT_CAP } from './cappedDotDisplay'
+export { DayDetailSheet } from './DayDetailSheet'
+export type { DayDetailRow, DayDetailSheetProps } from './dayDetailTypes'
 export { MonthGrid } from './MonthGrid'
 export { MonthNavStrip } from './MonthNavStrip'
 export { MonthPickerSheet } from './MonthPickerSheet'

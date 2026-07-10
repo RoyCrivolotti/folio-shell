@@ -1,0 +1,44 @@
+.list {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  background: var(--color-surface);
+  color: inherit;
+  padding: 0.65rem 0.75rem;
+  cursor: pointer;
+}
+
+.itemStatic {
+  cursor: default;
+}
+
+.itemLabel {
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.itemSublabel {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin-top: 0.15rem;
+}
+
+.empty {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  margin: 0 0 1rem;
+}
+
+.footer {
+  display: block;
+}
