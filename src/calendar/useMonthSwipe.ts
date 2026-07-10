@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, type PointerEvent as ReactPointerEvent } from 'react'
+import { blockScrollLinkedNavigationWheel } from './scrollNavGuard'
 
 const POINTER_THRESHOLD = 48
 const WHEEL_THRESHOLD = 72
@@ -25,16 +26,11 @@ function attachWheelSwipe(
   }
 
   const onWheel = (event: WheelEvent) => {
+    blockScrollLinkedNavigationWheel(event)
+
     const absX = Math.abs(event.deltaX)
     const absY = Math.abs(event.deltaY)
-    if (absX < 1) return
-
-    // Block scroll-linked back/forward even when the trackpad sends mixed deltaY.
-    if (absX >= absY || absX >= 6) {
-      event.preventDefault()
-    }
-
-    if (absX <= absY) return
+    if (absX < 1 || absX <= absY) return
 
     wheelAccum += event.deltaX
     if (wheelTimer) clearTimeout(wheelTimer)
@@ -49,9 +45,9 @@ function attachWheelSwipe(
     }
   }
 
-  node.addEventListener('wheel', onWheel, { passive: false })
+  node.addEventListener('wheel', onWheel, { passive: false, capture: true })
   return () => {
-    node.removeEventListener('wheel', onWheel)
+    node.removeEventListener('wheel', onWheel, { capture: true })
     resetWheel()
   }
 }

@@ -25,5 +25,10 @@ export { MonthGrid } from './MonthGrid'
 export { MonthNavStrip } from './MonthNavStrip'
 export { MonthPickerSheet } from './MonthPickerSheet'
 export { useMonthSwipe } from './useMonthSwipe'
+export {
+  blockScrollLinkedNavigationWheel,
+  FOLIO_CALENDAR_SELECTOR,
+  wheelEventTargetsCalendar,
+} from './scrollNavGuard'
 export { useNarrowViewport } from '../hooks/useNarrowViewport'
 export type { MonthDayMarkers, MonthDayMarkerItem, MonthGridLegendItem, MonthGridProps } from './monthGridTypes'

@@ -84,7 +84,7 @@ export function MonthGrid({
   const { zoneRef, pointerHandlers } = useMonthGridNavigation(monthKey, onMonthChange)
 
   return (
-    <section ref={zoneRef} className={styles.swipeZone} {...pointerHandlers}>
+    <section ref={zoneRef} className={styles.swipeZone} data-folio-calendar="" {...pointerHandlers}>
       <MonthNavStrip
         monthKey={monthKey}
         onMonthChange={onMonthChange}

@@ -18,6 +18,7 @@ export type {
 } from './components/HubMenu/HubMenuContext'
 export { useNarrowViewport } from './hooks/useNarrowViewport'
 export { usePreventScrollLinkedNavigation } from './hooks/usePreventScrollLinkedNavigation'
+export type { ScrollNavGuardScope } from './hooks/usePreventScrollLinkedNavigation'
 export { cloudflareAccessLogoutUrl } from './auth/cloudflareAccessLogout'
 export { BottomSheet } from './components/BottomSheet/BottomSheet'
 export { getSiteUrls } from './config/siteUrls'
