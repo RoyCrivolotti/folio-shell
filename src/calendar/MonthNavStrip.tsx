@@ -1,7 +1,5 @@
-import { useCallback } from 'react'
 import { formatMonthTitle, shiftMonthKey } from './calendarUtils'
 import styles from './monthGrid.module.css'
-import { useMonthSwipe } from './useMonthSwipe'
 
 export function MonthNavStrip({
   monthKey,
@@ -12,12 +10,11 @@ export function MonthNavStrip({
   onMonthChange: (monthKey: string) => void
   onOpenPicker: () => void
 }) {
-  const goPrev = useCallback(() => onMonthChange(shiftMonthKey(monthKey, -1)), [monthKey, onMonthChange])
-  const goNext = useCallback(() => onMonthChange(shiftMonthKey(monthKey, 1)), [monthKey, onMonthChange])
-  const { zoneRef, pointerHandlers } = useMonthSwipe({ onPrevMonth: goPrev, onNextMonth: goNext })
+  const goPrev = () => onMonthChange(shiftMonthKey(monthKey, -1))
+  const goNext = () => onMonthChange(shiftMonthKey(monthKey, 1))
 
   return (
-    <div ref={zoneRef} className={styles.navStrip} {...pointerHandlers}>
+    <div className={styles.navStrip}>
       <button type="button" className={styles.navBtn} onClick={goPrev} aria-label="Previous month">
         ←
       </button>
