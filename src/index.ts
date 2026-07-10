@@ -17,6 +17,7 @@ export type {
   HubNavItem,
 } from './components/HubMenu/HubMenuContext'
 export { cloudflareAccessLogoutUrl } from './auth/cloudflareAccessLogout'
+export { BottomSheet } from './components/BottomSheet/BottomSheet'
 export { getSiteUrls } from './config/siteUrls'
 export type { SiteUrls } from './config/siteUrls'
 export * from './calendar'

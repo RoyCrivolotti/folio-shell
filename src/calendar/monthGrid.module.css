@@ -1,0 +1,147 @@
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.swipeZone {
+  overscroll-behavior-x: none;
+  touch-action: pan-y;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+}
+
+.navStrip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.65rem;
+  background: var(--color-surface);
+}
+
+.subtitle {
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.monthTitleBtn {
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.35rem;
+}
+
+.monthTitleBtn:hover {
+  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+}
+
+.legendHint {
+  flex: 1 1 100%;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.navBtn {
+  font: inherit;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: inherit;
+  border-radius: 0.5rem;
+  padding: 0.35rem 0.65rem;
+  cursor: pointer;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+}
+
+.cell {
+  aspect-ratio: 1;
+  min-height: 2.75rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  background: var(--color-surface);
+  color: inherit;
+  font: inherit;
+  padding: 0.25rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.cellEmpty {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.cellToday {
+  border-color: var(--color-accent);
+}
+
+.cellSelected {
+  background: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface));
+}
+
+.dayNum {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  align-self: flex-start;
+}
+
+.markers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem;
+  margin-top: auto;
+  justify-content: center;
+}
+
+.marker {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+}
+
+.overflow {
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--color-calendar-overflow, #d97706);
+  line-height: 1;
+}
