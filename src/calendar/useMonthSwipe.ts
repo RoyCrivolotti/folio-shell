@@ -27,9 +27,15 @@ function attachWheelSwipe(
   const onWheel = (event: WheelEvent) => {
     const absX = Math.abs(event.deltaX)
     const absY = Math.abs(event.deltaY)
-    if (absX < 1 || absX <= absY) return
+    if (absX < 1) return
 
-    event.preventDefault()
+    // Block scroll-linked back/forward even when the trackpad sends mixed deltaY.
+    if (absX >= absY || absX >= 6) {
+      event.preventDefault()
+    }
+
+    if (absX <= absY) return
+
     wheelAccum += event.deltaX
     if (wheelTimer) clearTimeout(wheelTimer)
     wheelTimer = setTimeout(resetWheel, WHEEL_RESET_MS)

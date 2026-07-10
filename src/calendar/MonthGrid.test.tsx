@@ -54,6 +54,9 @@ describe('MonthGrid', () => {
     await user.click(screen.getByRole('button', { name: '2026-05-15' }))
     expect(onDaySelect).toHaveBeenCalledWith('2026-05-15')
 
+    await user.click(screen.getByRole('button', { name: 'Previous month' }))
+    expect(onMonthChange).toHaveBeenCalledWith('2026-04')
+
     await user.click(screen.getByRole('button', { name: 'Choose month' }))
     expect(screen.getByRole('dialog')).toBeInTheDocument()
   })
@@ -91,5 +94,24 @@ describe('MonthGrid', () => {
     expect(screen.getByText('FOMC')).toBeInTheDocument()
     expect(screen.getByText('NVDA')).toBeInTheDocument()
     expect(screen.getByText('+1')).toBeInTheDocument()
+  })
+
+  it('renders compact weekday labels when compactWeekdayLabels is set', () => {
+    render(
+      <MonthGrid
+        monthKey="2026-05"
+        timezone="UTC"
+        markersByDay={new Map()}
+        markerClassName={markerClass}
+        stackedMarkerKind="incident"
+        selectedDay={null}
+        onDaySelect={() => {}}
+        onMonthChange={() => {}}
+        compactWeekdayLabels
+      />,
+    )
+
+    expect(screen.getByText('Su')).toBeInTheDocument()
+    expect(screen.queryByText('Sun')).not.toBeInTheDocument()
   })
 })

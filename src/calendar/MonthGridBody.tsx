@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { CalendarLegend } from './CalendarLegend'
 import styles from './monthGrid.module.css'
 import type { MonthDayMarkers, MonthGridLegendItem } from './monthGridTypes'
@@ -28,17 +29,17 @@ export function MonthGridBody({
   markerDisplay: 'dots' | 'pills'
   maxVisiblePills: number
   legend: MonthGridLegendItem[]
-  legendHint?: React.ReactNode
+  legendHint?: ReactNode
   weekdayLabels: string[]
   onDaySelect: (dayKey: string) => void
   ariaLabelForDay?: (dayKey: string, markers: MonthDayMarkers) => string
 }) {
   return (
-    <div className={styles.swipeZone}>
+    <>
       <CalendarLegend legend={legend} legendHint={legendHint} markerClassName={markerClassName} />
       <div className={styles.weekdays}>
-        {weekdayLabels.map((label) => (
-          <span key={label}>{label}</span>
+        {weekdayLabels.map((label, index) => (
+          <span key={`${label}-${index}`}>{label}</span>
         ))}
       </div>
       <MonthGridCells
@@ -54,6 +55,6 @@ export function MonthGridBody({
         resolveMarkers={resolveMonthDayMarkers}
         {...(ariaLabelForDay ? { ariaLabelForDay } : {})}
       />
-    </div>
+    </>
   )
 }

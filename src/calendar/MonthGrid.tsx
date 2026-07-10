@@ -1,12 +1,62 @@
-import { useState } from 'react'
-import { buildMonthGrid } from './calendarUtils'
+import { useCallback, useState } from 'react'
+import { buildMonthGrid, shiftMonthKey } from './calendarUtils'
 import styles from './monthGrid.module.css'
 import type { MonthGridProps } from './monthGridTypes'
 import { MonthGridBody } from './MonthGridBody'
 import { MonthGridPicker } from './MonthGridPicker'
 import { MonthNavStrip } from './MonthNavStrip'
+import { useMonthSwipe } from './useMonthSwipe'
 
 const DEFAULT_WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const COMPACT_WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+
+function resolveWeekdayLabels(
+  weekdayLabels: string[] | undefined,
+  compactWeekdayLabels: boolean,
+): string[] {
+  if (weekdayLabels) return weekdayLabels
+  return compactWeekdayLabels ? COMPACT_WEEKDAYS : DEFAULT_WEEKDAYS
+}
+
+function MonthGridPickerOverlay({
+  open,
+  monthKey,
+  onMonthChange,
+  onClose,
+  monthPickerTitle,
+  monthPickerHint,
+}: {
+  open: boolean
+  monthKey: string
+  onMonthChange: (monthKey: string) => void
+  onClose: () => void
+  monthPickerTitle?: string
+  monthPickerHint?: string
+}) {
+  if (!open) return null
+  return (
+    <MonthGridPicker
+      open={open}
+      monthKey={monthKey}
+      onMonthChange={onMonthChange}
+      onClose={onClose}
+      {...(monthPickerTitle ? { monthPickerTitle } : {})}
+      {...(monthPickerHint ? { monthPickerHint } : {})}
+    />
+  )
+}
+
+function useMonthGridNavigation(monthKey: string, onMonthChange: (monthKey: string) => void) {
+  const goPrev = useCallback(
+    () => onMonthChange(shiftMonthKey(monthKey, -1)),
+    [monthKey, onMonthChange],
+  )
+  const goNext = useCallback(
+    () => onMonthChange(shiftMonthKey(monthKey, 1)),
+    [monthKey, onMonthChange],
+  )
+  return useMonthSwipe({ onPrevMonth: goPrev, onNextMonth: goNext })
+}
 
 export function MonthGrid({
   monthKey,
@@ -20,7 +70,8 @@ export function MonthGrid({
   legend = [],
   legendHint,
   subtitle,
-  weekdayLabels = DEFAULT_WEEKDAYS,
+  weekdayLabels,
+  compactWeekdayLabels = false,
   monthPickerTitle,
   monthPickerHint,
   ariaLabelForDay,
@@ -29,9 +80,11 @@ export function MonthGrid({
 }: MonthGridProps) {
   const cells = buildMonthGrid(monthKey, timezone)
   const [pickerOpen, setPickerOpen] = useState(false)
+  const resolvedWeekdayLabels = resolveWeekdayLabels(weekdayLabels, compactWeekdayLabels)
+  const { zoneRef, pointerHandlers } = useMonthGridNavigation(monthKey, onMonthChange)
 
   return (
-    <section>
+    <section ref={zoneRef} className={styles.swipeZone} {...pointerHandlers}>
       <MonthNavStrip
         monthKey={monthKey}
         onMonthChange={onMonthChange}
@@ -49,20 +102,18 @@ export function MonthGrid({
         maxVisiblePills={maxVisiblePills}
         legend={legend}
         legendHint={legendHint}
-        weekdayLabels={weekdayLabels}
+        weekdayLabels={resolvedWeekdayLabels}
         onDaySelect={onDaySelect}
         {...(ariaLabelForDay ? { ariaLabelForDay } : {})}
       />
-      {pickerOpen ? (
-        <MonthGridPicker
-          open={pickerOpen}
-          monthKey={monthKey}
-          onMonthChange={onMonthChange}
-          onClose={() => setPickerOpen(false)}
-          {...(monthPickerTitle ? { monthPickerTitle } : {})}
-          {...(monthPickerHint ? { monthPickerHint } : {})}
-        />
-      ) : null}
+      <MonthGridPickerOverlay
+        open={pickerOpen}
+        monthKey={monthKey}
+        onMonthChange={onMonthChange}
+        onClose={() => setPickerOpen(false)}
+        {...(monthPickerTitle ? { monthPickerTitle } : {})}
+        {...(monthPickerHint ? { monthPickerHint } : {})}
+      />
     </section>
   )
 }

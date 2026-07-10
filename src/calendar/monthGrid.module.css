@@ -13,8 +13,12 @@
 }
 
 .swipeZone {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  overscroll-behavior: none;
   overscroll-behavior-x: none;
-  touch-action: pan-y;
+  touch-action: pan-y pinch-zoom;
 }
 
 .legendItem {
@@ -82,7 +86,7 @@
 
 .weekdays {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.25rem;
   margin-bottom: 0.25rem;
   font-size: 0.75rem;
@@ -92,7 +96,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.25rem;
 }
 
@@ -175,4 +179,30 @@
   font-weight: 600;
   color: var(--color-calendar-overflow, #d97706);
   line-height: 1;
+}
+
+@media (max-width: 720px) {
+  .weekdays {
+    font-size: 0.65rem;
+  }
+
+  .cell,
+  .cellPills {
+    min-height: 4.25rem;
+    padding: 0.15rem;
+  }
+
+  .dayNum {
+    font-size: 0.75rem;
+  }
+
+  .markers {
+    min-height: 1.75rem;
+    gap: 0.08rem;
+  }
+
+  .marker {
+    width: 0.35rem;
+    height: 0.35rem;
+  }
 }

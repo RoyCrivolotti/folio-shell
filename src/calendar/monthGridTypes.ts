@@ -38,6 +38,7 @@ export type MonthGridProps = {
   legendHint?: ReactNode
   subtitle?: string
   weekdayLabels?: string[]
+  compactWeekdayLabels?: boolean
   monthPickerTitle?: string
   monthPickerHint?: string
   ariaLabelForDay?: (dayKey: string, markers: MonthDayMarkers) => string
