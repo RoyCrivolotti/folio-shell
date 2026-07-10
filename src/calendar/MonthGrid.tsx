@@ -46,6 +46,18 @@ function MonthGridPickerOverlay({
   )
 }
 
+function useMonthGridNavigation(monthKey: string, onMonthChange: (monthKey: string) => void) {
+  const goPrev = useCallback(
+    () => onMonthChange(shiftMonthKey(monthKey, -1)),
+    [monthKey, onMonthChange],
+  )
+  const goNext = useCallback(
+    () => onMonthChange(shiftMonthKey(monthKey, 1)),
+    [monthKey, onMonthChange],
+  )
+  return useMonthSwipe({ onPrevMonth: goPrev, onNextMonth: goNext })
+}
+
 export function MonthGrid({
   monthKey,
   timezone,
@@ -69,15 +81,7 @@ export function MonthGrid({
   const cells = buildMonthGrid(monthKey, timezone)
   const [pickerOpen, setPickerOpen] = useState(false)
   const resolvedWeekdayLabels = resolveWeekdayLabels(weekdayLabels, compactWeekdayLabels)
-  const goPrev = useCallback(
-    () => onMonthChange(shiftMonthKey(monthKey, -1)),
-    [monthKey, onMonthChange],
-  )
-  const goNext = useCallback(
-    () => onMonthChange(shiftMonthKey(monthKey, 1)),
-    [monthKey, onMonthChange],
-  )
-  const { zoneRef, pointerHandlers } = useMonthSwipe({ onPrevMonth: goPrev, onNextMonth: goNext })
+  const { zoneRef, pointerHandlers } = useMonthGridNavigation(monthKey, onMonthChange)
 
   return (
     <section ref={zoneRef} className={styles.swipeZone} {...pointerHandlers}>

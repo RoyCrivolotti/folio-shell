@@ -16,8 +16,9 @@
   width: 100%;
   max-width: 100%;
   overflow-x: clip;
+  overscroll-behavior: none;
   overscroll-behavior-x: none;
-  touch-action: pan-y;
+  touch-action: pan-y pinch-zoom;
 }
 
 .legendItem {
