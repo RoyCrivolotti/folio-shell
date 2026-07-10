@@ -19,13 +19,13 @@ export function MonthGridPicker({
   return (
     <MonthPickerSheet
       monthKey={monthKey}
-      title={monthPickerTitle}
-      hint={monthPickerHint}
       onSelect={(key) => {
         onMonthChange(key)
         onClose()
       }}
       onClose={onClose}
+      {...(monthPickerTitle ? { title: monthPickerTitle } : {})}
+      {...(monthPickerHint ? { hint: monthPickerHint } : {})}
     />
   )
 }

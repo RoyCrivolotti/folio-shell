@@ -52,19 +52,19 @@ export function MonthGrid({
           selectedDay={selectedDay}
           stackedMarkerKind={stackedMarkerKind}
           markerClassName={markerClassName}
-          ariaLabelForDay={ariaLabelForDay}
           onDaySelect={onDaySelect}
           resolveMarkers={resolveMonthDayMarkers}
+          {...(ariaLabelForDay ? { ariaLabelForDay } : {})}
         />
       </div>
       {pickerOpen ? (
         <MonthGridPicker
           open={pickerOpen}
           monthKey={monthKey}
-          monthPickerTitle={monthPickerTitle}
-          monthPickerHint={monthPickerHint}
           onMonthChange={onMonthChange}
           onClose={() => setPickerOpen(false)}
+          {...(monthPickerTitle ? { monthPickerTitle } : {})}
+          {...(monthPickerHint ? { monthPickerHint } : {})}
         />
       ) : null}
     </section>
