@@ -26,6 +26,20 @@ export function formatMonthTitle(monthKey: string): string {
   )
 }
 
+export function formatDayTitle(dayKey: string): string {
+  const parts = dayKey.split('-').map(Number)
+  const year = parts[0]
+  const month = parts[1]
+  const day = parts[2]
+  if (year === undefined || month === undefined || day === undefined) return dayKey
+  return new Intl.DateTimeFormat('en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date(year, month - 1, day))
+}
+
 export function todayKey(timezone: string): string {
   return toLocalParts(new Date().toISOString(), timezone).dateKey
 }
