@@ -1,10 +1,11 @@
-import { useState } from 'react'
-import { buildMonthGrid } from './calendarUtils'
+import { useCallback, useState } from 'react'
+import { buildMonthGrid, shiftMonthKey } from './calendarUtils'
 import styles from './monthGrid.module.css'
 import type { MonthGridProps } from './monthGridTypes'
 import { MonthGridBody } from './MonthGridBody'
 import { MonthGridPicker } from './MonthGridPicker'
 import { MonthNavStrip } from './MonthNavStrip'
+import { useMonthSwipe } from './useMonthSwipe'
 
 const DEFAULT_WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const COMPACT_WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
@@ -68,9 +69,18 @@ export function MonthGrid({
   const cells = buildMonthGrid(monthKey, timezone)
   const [pickerOpen, setPickerOpen] = useState(false)
   const resolvedWeekdayLabels = resolveWeekdayLabels(weekdayLabels, compactWeekdayLabels)
+  const goPrev = useCallback(
+    () => onMonthChange(shiftMonthKey(monthKey, -1)),
+    [monthKey, onMonthChange],
+  )
+  const goNext = useCallback(
+    () => onMonthChange(shiftMonthKey(monthKey, 1)),
+    [monthKey, onMonthChange],
+  )
+  const { zoneRef, pointerHandlers } = useMonthSwipe({ onPrevMonth: goPrev, onNextMonth: goNext })
 
   return (
-    <section>
+    <section ref={zoneRef} className={styles.swipeZone} {...pointerHandlers}>
       <MonthNavStrip
         monthKey={monthKey}
         onMonthChange={onMonthChange}
@@ -78,7 +88,6 @@ export function MonthGrid({
       />
       {subtitle ? <p className={styles.subtitle}>{subtitle}</p> : null}
       <MonthGridBody
-        monthKey={monthKey}
         cells={cells}
         timezone={timezone}
         markersByDay={markersByDay}
@@ -91,7 +100,6 @@ export function MonthGrid({
         legendHint={legendHint}
         weekdayLabels={resolvedWeekdayLabels}
         onDaySelect={onDaySelect}
-        onMonthChange={onMonthChange}
         {...(ariaLabelForDay ? { ariaLabelForDay } : {})}
       />
       <MonthGridPickerOverlay
