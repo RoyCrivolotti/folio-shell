@@ -1,8 +1,8 @@
 /* ---- Triggers ---- */
 .triggerFixed {
   position: fixed;
-  top: max(0.75rem, env(safe-area-inset-top, 0));
-  right: max(0.85rem, env(safe-area-inset-right, 0));
+  top: max(0.75rem, env(safe-area-inset-top, 0px));
+  right: max(0.85rem, env(safe-area-inset-right, 0px));
   z-index: 50;
 }
 
@@ -95,11 +95,9 @@
 @keyframes panelIn {
   from {
     opacity: 0;
-    transform: translateY(1rem);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -120,8 +118,22 @@
   background: var(--color-bg);
   color: var(--color-text);
   animation: panelIn 0.24s cubic-bezier(0.22, 1, 0.36, 1);
-  padding-top: env(safe-area-inset-top, 0);
-  padding-bottom: env(safe-area-inset-bottom, 0);
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Installed PWA on a phone: the panel is full-bleed under the translucent iOS
+   status bar, and WebKit intermittently reports safe-area-inset-top as 0 while
+   the panel mounts and animates — which drops "Navigate to" and the close
+   button under the clock/battery and out of reach. Hold a status bar's worth
+   of headroom; max() still uses the real inset whenever iOS reports it. The
+   .panelStandalone class is only added in an installed PWA (see
+   isStandaloneDisplay in hubMenuHooks.ts), and this only applies below the
+   popover breakpoint, so a browser tab and the desktop popover are unchanged. */
+@media (max-width: 767.98px) {
+  .panelStandalone {
+    padding-top: max(env(safe-area-inset-top, 0px), 3rem);
+  }
 }
 
 .head {
@@ -142,8 +154,8 @@
 }
 
 .close {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.75rem;
+  height: 2.75rem;
   padding: 0;
   border: none;
   background: color-mix(in srgb, var(--color-text) 8%, transparent);
@@ -194,7 +206,7 @@
 
 .footer {
   flex-shrink: 0;
-  padding: 0.75rem 1rem calc(0.85rem + env(safe-area-inset-bottom, 0));
+  padding: 0.75rem 1rem calc(0.85rem + env(safe-area-inset-bottom, 0px));
   border-top: 1px solid var(--color-border);
 }
 

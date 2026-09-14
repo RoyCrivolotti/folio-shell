@@ -1,18 +1,27 @@
 import { useEffect, type RefObject } from 'react'
+import { useBodyScrollLock } from '../../hooks/useBodyScrollLock'
 
 export function useMenuLock(open: boolean, onClose: () => void) {
+  useBodyScrollLock(open)
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
     document.addEventListener('keydown', onKey)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
-    }
+    return () => document.removeEventListener('keydown', onKey)
   }, [open, onClose])
+}
+
+/**
+ * Home-screen / installed PWA. iOS Safari does not support the
+ * `(display-mode: standalone)` media query, so check the iOS-specific
+ * `navigator.standalone` first, then the standard query for other platforms.
+ */
+export function isStandaloneDisplay(): boolean {
+  if (typeof window === 'undefined') return false
+  const nav = window.navigator as Navigator & { standalone?: boolean }
+  return nav.standalone === true || window.matchMedia?.('(display-mode: standalone)').matches === true
 }
 
 export function useFocusTrap(active: boolean, containerRef: RefObject<HTMLElement | null>) {

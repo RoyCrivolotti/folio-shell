@@ -2,7 +2,7 @@ import { useId, useMemo, useRef } from 'react'
 import { XIcon } from '../icons/icons'
 import { filterNavItemsForPath, useHubMenuContext } from './HubMenuContext'
 import type { HubMenuAnchor } from './HubMenuContext'
-import { useFocusTrap } from './hubMenuHooks'
+import { isStandaloneDisplay, useFocusTrap } from './hubMenuHooks'
 import { HubMenuLogoutFooter, HubMenuNavList } from './HubMenuNavList'
 import styles from './HubMenu.module.css'
 
@@ -22,7 +22,12 @@ export function HubMenuPanel({
     () => filterNavItemsForPath(navItems, { origin, pathname }),
     [navItems, origin, pathname],
   )
-  const panelClass = anchor === 'fixed' ? styles.panelFixed : styles.panelInline
+  const panelClass = [
+    anchor === 'fixed' ? styles.panelFixed : styles.panelInline,
+    isStandaloneDisplay() ? styles.panelStandalone : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
   const titleId = useId()
   const panelRef = useRef<HTMLElement>(null)
   useFocusTrap(true, panelRef)
