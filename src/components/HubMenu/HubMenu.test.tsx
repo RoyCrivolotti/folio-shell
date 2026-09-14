@@ -64,6 +64,19 @@ describe('HubMenu', () => {
     expect(screen.queryByRole('link', { name: 'Sign out' })).not.toBeInTheDocument()
   })
 
+  it('closes when Escape is pressed', async () => {
+    const user = userEvent.setup()
+    render(
+      <HubMenuRoot anchor="inline" navItems={navItems}>
+        <HubMenuTrigger label="Menu" />
+      </HubMenuRoot>,
+    )
+    await user.click(screen.getByRole('button', { name: 'Menu' }))
+    expect(screen.getByRole('dialog', { name: 'Navigate to' })).toBeInTheDocument()
+    await user.keyboard('{Escape}')
+    expect(screen.queryByRole('dialog', { name: 'Navigate to' })).not.toBeInTheDocument()
+  })
+
   it('keeps cross-origin links when pathname matches', async () => {
     const user = userEvent.setup()
     const crossApp: HubNavItem[] = [
