@@ -101,6 +101,18 @@
   }
 }
 
+@keyframes backdropOut {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes panelOut {
+  to {
+    opacity: 0;
+  }
+}
+
 .backdrop {
   position: fixed;
   inset: 0;
@@ -120,6 +132,19 @@
   animation: panelIn 0.24s cubic-bezier(0.22, 1, 0.36, 1);
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Leaving is the arrival played backwards, over the time the menu is held for
+   (`--hub-exit-ms`, from HUB_MENU_EXIT_MS). Two classes on the panel so it beats the desktop
+   popover animation declared further down. */
+.backdropLeaving {
+  animation: backdropOut var(--hub-exit-ms, 150ms) ease-in forwards;
+  pointer-events: none;
+}
+
+.panel.panelLeaving {
+  animation: panelOut var(--hub-exit-ms, 150ms) ease-in forwards;
+  pointer-events: none;
 }
 
 /* Installed PWA on a phone: the panel is full-bleed under the translucent iOS
@@ -242,6 +267,17 @@
     }
   }
 
+  @keyframes popoverOut {
+    to {
+      opacity: 0;
+      transform: translateY(-0.35rem) scale(0.97);
+    }
+  }
+
+  .panel.panelLeaving {
+    animation-name: popoverOut;
+  }
+
   .panel {
     inset: auto;
     width: 16rem;
@@ -271,7 +307,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .backdrop,
-  .panel {
+  .backdropLeaving,
+  .panel,
+  .panel.panelLeaving {
     animation: none;
   }
 }
