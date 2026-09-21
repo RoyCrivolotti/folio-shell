@@ -17,6 +17,7 @@ export type {
   HubNavItem,
 } from './components/HubMenu/HubMenuContext'
 export { useNarrowViewport } from './hooks/useNarrowViewport'
+export { useBodyScrollLock, isBodyScrollLocked } from './hooks/useBodyScrollLock'
 export { usePreventScrollLinkedNavigation } from './hooks/usePreventScrollLinkedNavigation'
 export type { ScrollNavGuardScope } from './hooks/usePreventScrollLinkedNavigation'
 export { cloudflareAccessLogoutUrl } from './auth/cloudflareAccessLogout'

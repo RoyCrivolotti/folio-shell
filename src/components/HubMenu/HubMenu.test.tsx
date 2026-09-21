@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
+import { useBodyScrollLock } from '../../hooks/useBodyScrollLock'
 import { GitHubIcon } from '../icons/icons'
 import { HubMenuRoot, HubMenuTrigger } from './HubMenuContext'
 import type { HubNavItem } from './HubMenuContext'
@@ -92,5 +93,29 @@ describe('HubMenu', () => {
     await user.click(screen.getByRole('button', { name: 'Menu' }))
     expect(screen.getByRole('link', { name: 'Hub' })).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'This app' })).not.toBeInTheDocument()
+  })
+
+  it('leaves the page scrollable when it closes after another sheet released first', async () => {
+    // A sheet is open, the menu opens on top, the sheet goes away, then the menu closes. With
+    // independent locks the menu restored a body that was already pinned and the page stuck.
+    const user = userEvent.setup()
+    function Sheet() {
+      useBodyScrollLock(true)
+      return null
+    }
+    const tree = (withSheet: boolean) => (
+      <HubMenuRoot anchor="inline" navItems={navItems}>
+        <HubMenuTrigger label="Menu" />
+        {withSheet ? <Sheet /> : null}
+      </HubMenuRoot>
+    )
+    const { rerender } = render(tree(true))
+
+    await user.click(screen.getByRole('button', { name: 'Menu' }))
+    rerender(tree(false))
+    await user.keyboard('{Escape}')
+
+    expect(document.body.style.position).toBe('')
+    expect(document.body.style.overflow).toBe('')
   })
 })
