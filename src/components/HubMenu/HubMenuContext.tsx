@@ -8,7 +8,7 @@ import {
   type SVGProps,
 } from 'react'
 import { cloudflareAccessLogoutUrl } from '../../auth/cloudflareAccessLogout'
-import { useMenuLock } from './hubMenuHooks'
+import { HUB_MENU_EXIT_MS, useExitHold, useMenuLock } from './hubMenuHooks'
 import { HubMenuPanel } from './HubMenuPanel'
 import styles from './HubMenu.module.css'
 
@@ -76,7 +76,8 @@ export function HubMenuRoot({
   const [open, setOpen] = useState(false)
   const close = () => setOpen(false)
   const toggle = () => setOpen((v) => !v)
-  useMenuLock(open, close)
+  const { mounted, leaving } = useExitHold(open, HUB_MENU_EXIT_MS)
+  useMenuLock(open, close, mounted)
 
   const resolvedLogout = resolveLogoutHref(logoutHref)
 
@@ -88,7 +89,9 @@ export function HubMenuRoot({
   return (
     <HubMenuContext.Provider value={value}>
       {children}
-      {open ? <HubMenuPanel anchor={anchor} onClose={close} logoutHref={resolvedLogout} /> : null}
+      {mounted ? (
+        <HubMenuPanel anchor={anchor} onClose={close} logoutHref={resolvedLogout} leaving={leaving} />
+      ) : null}
     </HubMenuContext.Provider>
   )
 }
