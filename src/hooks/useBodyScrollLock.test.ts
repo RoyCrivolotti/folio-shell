@@ -17,15 +17,22 @@ describe('useBodyScrollLock', () => {
 
     expect(document.documentElement.style.overflow).toBe('hidden')
     expect(document.documentElement.style.overscrollBehavior).toBe('none')
-    expect(document.body.style.overflow).toBe('hidden')
     expect(isBodyScrollLocked()).toBe(true)
 
     unmount()
 
     expect(document.documentElement.style.overflow).toBe('')
     expect(document.documentElement.style.overscrollBehavior).toBe('')
-    expect(document.body.style.overflow).toBe('')
     expect(isBodyScrollLocked()).toBe(false)
+  })
+
+  it('leaves the body alone entirely, so it cannot become a scroll container', () => {
+    // `overflow` on body turns the body into its descendants' scroll container, which
+    // un-sticks a sticky header from the document scroll as thoroughly as the old pin.
+    const { unmount } = renderHook(() => useBodyScrollLock(true))
+    expect(document.body.style.overflow).toBe('')
+    expect(document.body.style.position).toBe('')
+    unmount()
   })
 
   it('never repositions the page: no fixed body, no scroll restore', () => {
@@ -45,13 +52,13 @@ describe('useBodyScrollLock', () => {
 
   it('does nothing while inactive, and locks when it turns active', () => {
     const { rerender } = renderHook(({ on }) => useBodyScrollLock(on), { initialProps: { on: false } })
-    expect(document.body.style.overflow).toBe('')
+    expect(document.documentElement.style.overflow).toBe('')
 
     rerender({ on: true })
-    expect(document.body.style.overflow).toBe('hidden')
+    expect(document.documentElement.style.overflow).toBe('hidden')
 
     rerender({ on: false })
-    expect(document.body.style.overflow).toBe('')
+    expect(document.documentElement.style.overflow).toBe('')
   })
 
   it('keeps scrolling off until the last of several holders lets go', () => {
@@ -59,10 +66,10 @@ describe('useBodyScrollLock', () => {
     const second = renderHook(() => useBodyScrollLock(true))
 
     first.unmount()
-    expect(document.body.style.overflow).toBe('hidden')
+    expect(document.documentElement.style.overflow).toBe('hidden')
 
     second.unmount()
-    expect(document.body.style.overflow).toBe('')
+    expect(document.documentElement.style.overflow).toBe('')
   })
 
   it('is not left locked when holders release in the opposite order to how they took it', () => {
@@ -75,7 +82,6 @@ describe('useBodyScrollLock', () => {
     second.unmount()
 
     expect(document.documentElement.style.overflow).toBe('')
-    expect(document.body.style.overflow).toBe('')
     expect(isBodyScrollLocked()).toBe(false)
   })
 
