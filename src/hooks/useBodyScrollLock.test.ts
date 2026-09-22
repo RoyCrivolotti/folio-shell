@@ -12,74 +12,80 @@ describe('useBodyScrollLock', () => {
     vi.restoreAllMocks()
   })
 
-  it('pins the body while held, then restores it and the scroll position', () => {
-    const scrollTo = vi.spyOn(window, 'scrollTo')
-    setScrollY(120)
+  it('switches scrolling off while held, then restores the styles', () => {
     const { unmount } = renderHook(() => useBodyScrollLock(true))
 
-    expect(document.body.style.position).toBe('fixed')
+    expect(document.documentElement.style.overflow).toBe('hidden')
+    expect(document.documentElement.style.overscrollBehavior).toBe('none')
     expect(document.body.style.overflow).toBe('hidden')
-    expect(document.body.style.top).toBe('-120px')
     expect(isBodyScrollLocked()).toBe(true)
 
     unmount()
 
-    expect(document.body.style.position).toBe('')
+    expect(document.documentElement.style.overflow).toBe('')
+    expect(document.documentElement.style.overscrollBehavior).toBe('')
     expect(document.body.style.overflow).toBe('')
-    expect(document.body.style.top).toBe('')
-    expect(scrollTo).toHaveBeenCalledWith(0, 120)
     expect(isBodyScrollLocked()).toBe(false)
+  })
+
+  it('never repositions the page: no fixed body, no scroll restore', () => {
+    // The old pin (`position: fixed; top: -scrollY`) broke sticky headers and, in an
+    // installed iOS app, shortened the layout viewport so fixed bars sat 62px too high.
+    const scrollTo = vi.spyOn(window, 'scrollTo')
+    setScrollY(120)
+    const { unmount } = renderHook(() => useBodyScrollLock(true))
+
+    expect(document.body.style.position).toBe('')
+    expect(document.body.style.top).toBe('')
+    expect(window.scrollY).toBe(120)
+
+    unmount()
+    expect(scrollTo).not.toHaveBeenCalled()
   })
 
   it('does nothing while inactive, and locks when it turns active', () => {
     const { rerender } = renderHook(({ on }) => useBodyScrollLock(on), { initialProps: { on: false } })
-    expect(document.body.style.position).toBe('')
+    expect(document.body.style.overflow).toBe('')
 
     rerender({ on: true })
-    expect(document.body.style.position).toBe('fixed')
+    expect(document.body.style.overflow).toBe('hidden')
 
     rerender({ on: false })
-    expect(document.body.style.position).toBe('')
-  })
-
-  it('keeps the page pinned until the last of several holders lets go', () => {
-    const first = renderHook(() => useBodyScrollLock(true))
-    const second = renderHook(() => useBodyScrollLock(true))
-
-    first.unmount()
-    expect(document.body.style.position).toBe('fixed')
-
-    second.unmount()
-    expect(document.body.style.position).toBe('')
-  })
-
-  it('is not left pinned when holders release in the opposite order to how they took it', () => {
-    // The regression: a second lock that snapshots the body while it is already pinned, released
-    // last, used to "restore" the pinned state and leave the page stuck.
-    const first = renderHook(() => useBodyScrollLock(true))
-    const second = renderHook(() => useBodyScrollLock(true))
-
-    first.unmount()
-    second.unmount()
-
-    expect(document.body.style.position).toBe('')
     expect(document.body.style.overflow).toBe('')
-    expect(document.body.style.top).toBe('')
+  })
+
+  it('keeps scrolling off until the last of several holders lets go', () => {
+    const first = renderHook(() => useBodyScrollLock(true))
+    const second = renderHook(() => useBodyScrollLock(true))
+
+    first.unmount()
+    expect(document.body.style.overflow).toBe('hidden')
+
+    second.unmount()
+    expect(document.body.style.overflow).toBe('')
+  })
+
+  it('is not left locked when holders release in the opposite order to how they took it', () => {
+    // The regression the counter exists for: a second lock that snapshots styles while
+    // the page is already locked, released last, used to "restore" the locked state.
+    const first = renderHook(() => useBodyScrollLock(true))
+    const second = renderHook(() => useBodyScrollLock(true))
+
+    first.unmount()
+    second.unmount()
+
+    expect(document.documentElement.style.overflow).toBe('')
+    expect(document.body.style.overflow).toBe('')
     expect(isBodyScrollLocked()).toBe(false)
   })
 
-  it('captures the scroll position once, even though the pinned body then reads scrollY as 0', () => {
-    const scrollTo = vi.spyOn(window, 'scrollTo')
-    setScrollY(200)
-    const first = renderHook(() => useBodyScrollLock(true))
-    setScrollY(0)
-    const second = renderHook(() => useBodyScrollLock(true))
+  it('restores styles a caller had set before the lock took hold', () => {
+    document.documentElement.style.overscrollBehavior = 'contain'
+    const { unmount } = renderHook(() => useBodyScrollLock(true))
+    expect(document.documentElement.style.overscrollBehavior).toBe('none')
 
-    expect(document.body.style.top).toBe('-200px')
-
-    second.unmount()
-    first.unmount()
-
-    expect(scrollTo).toHaveBeenCalledWith(0, 200)
+    unmount()
+    expect(document.documentElement.style.overscrollBehavior).toBe('contain')
+    document.documentElement.style.overscrollBehavior = ''
   })
 })
